@@ -1,5 +1,5 @@
-# tvm
-TVM: A little bit like RVM, for Terraform.
+# tvm: Terraform Version Manager
+A little bit like RVM, for Terraform.
 
 I work with Terraform *a lot* and with many versions. I use [RVM](http://rvm.io/) for Ruby on Rails project and find its syntax to be drop-dead easy.
 
