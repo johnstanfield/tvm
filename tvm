@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# this is where terraform versions are installed
+TERRAFORMS_DIR="$ROOT_DIR/terraforms"
+mkdir -p "$TERRAFORMS_DIR"
+
+# if this is where you specify linux_amd64, arm, 386, etc.
+ARCH=linux_amd64
+
+if [ "$1" == "use" ]; then
+  if [ -f "$TERRAFORMS_DIR/terraform-$2" ]; then
+    rm -f "$ROOT_DIR/terraform"
+    ln -s "$TERRAFORMS_DIR/terraform-$2" "$ROOT_DIR/terraform"
+    echo now using `readlink $ROOT_DIR/terraform`
+  else
+    echo terraform-$2 not found, try installing with tvm install $2
+  fi
+elif [ "$1" == "list" ]; then
+  ls -1 "$TERRAFORMS_DIR"
+elif [ "$1" == "install" ]; then
+  # inside terraform-.x.y.z.zip is a file named terraform to be renamed terraform-x.y.z
+  download_dir=`mktemp -d --tmpdir="$TERRAFORMS_DIR"`
+  download="$download_dir/download.zip"
+  install="$TERRAFORMS_DIR/terraform-$2"
+  wget -O "$download" https://releases.hashicorp.com/terraform/$2/terraform_$2_$ARCH.zip
+  unzip -d "$download_dir" "$download"
+  mv "$download_dir/terraform" "$install"
+  rm -rf "$download_dir"
+  chmod +x "$install"
+else
+  echo unknown command $1
+  echo you are using `readlink $ROOT_DIR/terraform`
+fi
