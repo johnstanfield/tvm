@@ -10,12 +10,22 @@ mkdir -p "$TERRAFORMS_DIR"
 ARCH=linux_amd64
 
 if [ "$1" == "use" ]; then
-  if [ -f "$TERRAFORMS_DIR/terraform-$2" ]; then
+  use=$2
+  if [ "$use" == "" ]; then
+    guess=`grep required_version . -r | head -n1 | rev | awk -F ' ' '{print $1}' | sed 's/"//g' | rev`
+    if [ "$guess" != "" ]; then
+      echo found required_version of $guess
+      use=$guess
+    else
+      echo you did not specify a version and required_version not found in current directory
+    fi
+  fi
+  if [ -f "$TERRAFORMS_DIR/terraform-$use" ]; then
     rm -f "$ROOT_DIR/terraform"
-    ln -s "$TERRAFORMS_DIR/terraform-$2" "$ROOT_DIR/terraform"
+    ln -s "$TERRAFORMS_DIR/terraform-$use" "$ROOT_DIR/terraform"
     echo now using `readlink $ROOT_DIR/terraform`
   else
-    echo terraform-$2 not found, try installing with tvm install $2
+    echo terraform-$use not found, try installing with tvm install $use
   fi
 elif [ "$1" == "list" ]; then
   ls -1 "$TERRAFORMS_DIR"

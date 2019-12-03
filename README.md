@@ -23,8 +23,10 @@ $ tvm install 0.12.9
 ```
 $ tvm list
 terraform-0.11.14
-terraform-0.12.12
 terraform-0.12.13
+terraform-0.12.16
+terraform-0.12.3
+terraform-0.12.7
 terraform-0.12.9
 ```
 
@@ -42,3 +44,12 @@ now using /home/john/tvm/terraforms/terraform-0.12.13
 $ terraform -v
 Terraform v0.12.13
 ```
+
+### Parse `required_version`
+```
+# assumes a file in the current directory contains a `required_version` [declaration](https://www.terraform.io/docs/configuration/terraform.html#specifying-a-required-terraform-version)
+$ tvm use
+found required_version of 0.12.13
+now using /home/john/tvm/terraforms/terraform-0.12.13
+```
+
