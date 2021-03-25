@@ -28,17 +28,40 @@ if [ "$1" == "use" ]; then
     echo terraform-$use not found, try installing with tvm install $use
   fi
 elif [ "$1" == "list" ]; then
-  ls -1 "$TERRAFORMS_DIR"
+  ls -1 "$TERRAFORMS_DIR/"terraform-*
 elif [ "$1" == "install" ]; then
-  # inside terraform-.x.y.z.zip is a file named terraform to be renamed terraform-x.y.z
-  download_dir=`mktemp -d --tmpdir="$TERRAFORMS_DIR"`
-  download="$download_dir/download.zip"
-  install="$TERRAFORMS_DIR/terraform-$2"
-  wget -O "$download" https://releases.hashicorp.com/terraform/$2/terraform_$2_$ARCH.zip
-  unzip -d "$download_dir" "$download"
-  mv "$download_dir/terraform" "$install"
-  rm -rf "$download_dir"
-  chmod +x "$install"
+  if [ "$2" == "all" ]; then
+    for major in {11..14}; do
+      for minor in {1..50}; do
+        version=0.$major.$minor
+        if [ ! -f "$TERRAFORMS_DIR/terraform-$version" ]; then
+          echo checking if $version exists...
+          if [ `curl -s -o /dev/null -I -w "%{http_code}" https://github.com/hashicorp/terraform/tree/v$version` == "200" ]; then
+            echo installing $version
+            tvm install $version 2>&1 > /dev/null
+          else
+            echo "$version does not (yet?) exist"
+            break
+          fi
+        else
+          echo already installed $version
+        fi
+      done
+    done
+  else
+    # inside terraform-.x.y.z.zip is a file named terraform to be renamed terraform-x.y.z
+    download_dir=`mktemp -d --tmpdir="$TERRAFORMS_DIR"`
+    download="$download_dir/download.zip"
+    install="$TERRAFORMS_DIR/terraform-$2"
+    if wget --quiet -O "$download" https://releases.hashicorp.com/terraform/$2/terraform_$2_$ARCH.zip; then
+      unzip -d "$download_dir" "$download"
+      mv "$download_dir/terraform" "$install"
+      rm -rf "$download_dir"
+      chmod +x "$install"
+    else
+      echo error downloading $2
+    fi
+  fi
 else
   echo unknown command $1
   echo you are using `readlink $ROOT_DIR/terraform`

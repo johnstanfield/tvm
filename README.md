@@ -45,6 +45,24 @@ $ terraform -v
 Terraform v0.12.13
 ```
 
+### Install all versions of Terraform
+```
+tvm install all
+already installed 0.14.1
+already installed 0.14.2
+already installed 0.14.3
+already installed 0.14.4
+already installed 0.14.5
+already installed 0.14.6
+already installed 0.14.7
+checking if 0.14.8 exists...
+installing 0.14.8
+checking if 0.14.9 exists...
+installing 0.14.9
+checking if 0.14.10 exists...
+0.14.10 does not (yet?) exist
+```
+
 ### Parse `required_version`
 ```
 # assumes a file in the current directory contains a `required_version` [declaration](https://www.terraform.io/docs/configuration/terraform.html#specifying-a-required-terraform-version)
