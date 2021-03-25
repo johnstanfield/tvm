@@ -45,9 +45,22 @@ $ terraform -v
 Terraform v0.12.13
 ```
 
-### Install all versions of Terraform
+### Install all versions of Terraform (0.11 to 0.14)
 ```
-tvm install all
+$ tvm install all
+already installed 0.11.1
+. . .
+checking if 0.11.15 exists...
+0.11.15 does not (yet?) exist
+already installed 0.12.1
+. . .
+already installed 0.12.30
+checking if 0.12.31 exists...
+0.12.31 does not (yet?) exist
+already installed 0.13.1
+. . .
+checking if 0.13.7 exists...
+0.13.7 does not (yet?) exist
 already installed 0.14.1
 already installed 0.14.2
 already installed 0.14.3
