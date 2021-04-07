@@ -77,8 +77,8 @@ checking if 0.14.10 exists...
 ```
 
 ### Parse `required_version`
+This assumes a file in the current directory contains a `required_version` [declaration](https://www.terraform.io/docs/configuration/terraform.html#specifying-a-required-terraform-version). It is easier than trying to find or remember the version in use by a given set of configs.
 ```
-# assumes a file in the current directory contains a `required_version` [declaration](https://www.terraform.io/docs/configuration/terraform.html#specifying-a-required-terraform-version)
 $ tvm use
 found required_version of 0.12.13
 now using /home/john/tvm/terraforms/terraform-0.12.13
